@@ -1,0 +1,21 @@
+{
+  "name": "reactjs",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "parcel demo.html",
+    "build": "parcel build demo.html",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.8.2",
+    "process": "^0.11.10"
+  },
+  "dependencies": {
+    "@parcel/css-cli-win32-x64-msvc": "^1.13.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
