@@ -1,3 +1,6 @@
+import { useState } from "react";
+
+
 const Title = () => (
     <img
       className="logo"
@@ -11,6 +14,8 @@ const Title = () => (
   return (
     <div className="head">
       <Title />
+
+
       <div className="nav-items">
         <ul>
           <li>Home</li>
