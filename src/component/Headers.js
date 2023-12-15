@@ -1,7 +1,10 @@
 import { useState } from "react";
 
 
+
+
 const Title = () => (
+  
     <img
       className="logo"
       alt="logo"
@@ -11,6 +14,9 @@ const Title = () => (
 
 
  const Headers = () => {
+  const [isLogged, setIsLogged] = useState(false);
+  const handleLogin = () => setIsLogged(!isLogged);
+
   return (
     <div className="head">
       <Title />
@@ -22,8 +28,18 @@ const Title = () => (
           <li>About</li>
           <li>Contact</li>
           <li>Cart</li>
+          {
+               <button className="login-button" onClick={handleLogin}>
+               {isLogged ? "Logout" : "Login"}
+             </button>
+
+          }
+      
         </ul>
+      
       </div>
+     
+
     </div>
   );
 };

@@ -8,6 +8,14 @@
     justify-content: center;
     margin: 1rem 0;
 }
+.restaurant-count {
+    width:80%;
+    margin:auto;
+    background-color:#fff;
+    font-size:2rem;
+    padding:2rem;
+
+}
 :root{
     --primary-color:#15605e;
 }

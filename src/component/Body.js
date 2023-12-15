@@ -1,80 +1,52 @@
-
-
-import { restaurantList } from "../config";
+import { useEffect, useState } from "react";
 import RestrauntCard from "./RestrauntCard";
-import { useState, useEffect } from "react";
-import { IMAGE_CDN_URL } from "../config";
-import Shimmer from "./shimmer";
-function filteredRestaurants(searchText, actualData) {
-  const data = actualData.filter((restaurant) => {
-    return restaurant.info.name
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-  });
-  return data;
-}
+import Shimmer from "./Shimmer";
 
 const Body = () => {
-  const [searchText, setSearchText] = useState("");
   const [restaurants, setRestaurants] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [actualData, setActualData] = useState({});
-  const [crouselCards, setCrouselCards] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  async function getRestaurants() {
-    setIsLoaded(false);
-    try {
-      const data = await fetch(
-        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=27.8973944&lng=78.0880129&page_type=DESKTOP_WEB_LISTING"
-      );
-      const json = await data.json();
-      console.log(json);
-      setRestaurants(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-      setCrouselCards(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-      setIsLoaded(true);
-      setActualData(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('API IS CALLING');
     getRestaurants();
   }, []);
 
+  async function getRestaurants() {
+    try {
+      const data = await fetch("https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=21.1702401&lng=72.83106070000001&page_type=DESKTOP_WEB_LISTING");
+      const json = await data.json();
+      setRestaurants(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+      setActualData(json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+    } finally {
+      setLoading(false); // Set loading to false whether successful or not
+    }
+  }
+
+  const filterDataDemo = (searchText, actualData) => {
+    const data = actualData.filter((restaurant) => {
+      return restaurant.info.name.toLowerCase().includes(searchText.toLowerCase());
+    });
+    return data;
+  };
+
   return (
     <>
-      <div className="crousel">
-        {/* {crouselCards.map((card, index) => {
-          return (
-            <div className="card-container" key={index}>
-              <img
-                className="crousel-image"
-                src={
-                  "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_520,h_520/" +
-                  card?.data?.creativeId
-                }
-              />
-            </div>
-          );
-        })} */}
-      </div>
       <div className="search-container">
-        <form className="search-form" onSubmit={(e) => e.preventDefault()}>
+        <form action="" onSubmit={(e) => e.preventDefault()}>
           <input
             type="text"
             className="search-input"
             placeholder="Search"
-            autoFocus={true}
             onChange={(e) => setSearchText(e.target.value)}
             value={searchText}
           />
           <button
             className="search-btn"
-            onClick={() => {
-              const data = filteredRestaurants(searchText, actualData);
+            onClick={(e) => {
+              const data = filterDataDemo(searchText, actualData);
               setRestaurants(data);
-              console.log(data);
             }}
           >
             Search
@@ -82,31 +54,24 @@ const Body = () => {
         </form>
       </div>
 
-      {!isLoaded ? (
-        <Shimmer />
-      ) : (
-        <div>
-          <p className="restaurant-count">{restaurants.length} restaurants.</p>
-          <div className="restaurant-list">
-            {restaurants.length == 0 ? (
-              <p
-                style={{ textAlign: "center", fontSize: "3rem", width: "100%" }}
-              >
+      <div className="restaurant-list">
+        {loading ? (
+          <Shimmer />
+        ) : (
+          <>
+            <p className="restaurant-count">{restaurants.length} restaurants.</p>
+            {restaurants.length === 0 ? (
+              <p style={{ textAlign: "center", fontSize: "3rem", width: "100%" }}>
                 No restaurant found...
               </p>
             ) : (
-              restaurants.map((restaurant) => {
-                return (
-                  <RestrauntCard
-                    {...restaurant?.info}
-                    key={restaurant?.info?.id}
-                  />
-                );
-              })
+              restaurants.map((restaurant) => (
+                <RestrauntCard {...restaurant?.info} key={restaurant?.info?.id} />
+              ))
             )}
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </>
   );
 };
