@@ -64,6 +64,13 @@ body{
     border-radius:5px;
     margin-top:1rem;
 }
+.shimmer-card{
+    width: 200px;
+    height: 200px;
+    background:lightgray ;
+    margin: 20px;
+
+}
 .card > img {
     width:100%;
     border-radius:5px;

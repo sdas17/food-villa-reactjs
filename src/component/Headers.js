@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
@@ -16,6 +16,10 @@ const Title = () => (
  const Headers = () => {
   const [isLogged, setIsLogged] = useState(false);
   const handleLogin = () => setIsLogged(!isLogged);
+  useEffect(()=>{
+    console.log('use effect');
+  },[isLogged])
+  console.log('render');
 
   return (
     <div className="head">
