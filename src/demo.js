@@ -12,22 +12,39 @@ import ReactDOM from "react-dom/client";
 import Headers from "./component/Headers";
 import Body from "./component/Body";
 import Footer from "./component/Footer";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import About from './component/About';
+import Error from "./component/Error";
 
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
 const AppLayout = () => {
   return (
     <>
       {/* <xyz.Headers /> */}
       <Headers/>
       <Body />
+      {/* <Title/> */}
 
       <Footer />
     </>
   );
 };
 
-root.render(<AppLayout />);
+const approutes=createBrowserRouter([
+{
+path:"/",
+element:<AppLayout/>,
+errorElement:<Error/>
+},
+{
+  path:"/about",
+  element:<About/>
+},
+]);
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<RouterProvider router={approutes}/>);
+// root.render(<AppLayout/>);
 
 
 
