@@ -12,9 +12,10 @@ import ReactDOM from "react-dom/client";
 import Headers from "./component/Headers";
 import Body from "./component/Body";
 import Footer from "./component/Footer";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider, createBrowserRouter,Outlet } from "react-router-dom";
 import About from './component/About';
 import Error from "./component/Error";
+import Contact from "./component/Contact";
 
 
 const AppLayout = () => {
@@ -22,7 +23,8 @@ const AppLayout = () => {
     <>
       {/* <xyz.Headers /> */}
       <Headers/>
-      <Body />
+      <Outlet/>
+      {/* <Body /> */}
       {/* <Title/> */}
 
       <Footer />
@@ -34,12 +36,24 @@ const approutes=createBrowserRouter([
 {
 path:"/",
 element:<AppLayout/>,
-errorElement:<Error/>
+errorElement:<Error/>,
+children:[
+  {
+    path:"/",
+    element:<Body/>
+  },
+  {
+    path:"/about",
+    element:<About/>
+  },
+  {
+    path:"/contact",
+    element:<Contact/>
+  }
+  
+]
 },
-{
-  path:"/about",
-  element:<About/>
-},
+
 ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
